@@ -3,11 +3,11 @@
 from odoo import models, fields, api
 
 
-# class g3_bank(models.Model):
-#     _name = 'g3_bank.g3_bank'
-#     _description = 'g3_bank.g3_bank'
+class Customer(models.Model):
+     _name = 'g3_bank.customer'
+     _description = 'Customer'
 
-#     name = fields.Char()
+     name = fields.Char()
 #     value = fields.Integer()
 #     value2 = fields.Float(compute="_value_pc", store=True)
 #     description = fields.Text()
