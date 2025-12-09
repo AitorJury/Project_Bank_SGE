@@ -8,9 +8,11 @@ class Account(models.Model):
     _description = 'Account'
 
     name = fields.Char()
-    value = fields.Integer()
-    value2 = fields.Float(compute="_value_pc", store=True)
-    description = fields.Text()
+    balance = fields.Monetary()
+    creditLine = fields.Monetary(Required = "False")
+    beginBalance = fields.Monetary()
+    beginBalanceTimestamp = fields.Date()
+    typeAccount = fields.selection()
 #
 #     @api.depends('value')
 #     def _value_pc(self):
