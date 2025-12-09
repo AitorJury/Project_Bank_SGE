@@ -19,24 +19,19 @@ class Account(models.Model):
 #   Utilizo name como la descripción de Account
     name = fields.Char(string='Description', required=True)
     balance = fields.Double(string='Balance', required=True)
-    creditLine = fields.Double(string='Credit Line')
+    creditLine = fields.Double(string='Credit Line', required=True)
     beginBalance = fields.Double(string='Begin Balance', required=True)
     beginBalanceTimestamp = fields.Date(string='Begin Balance Timestamp', required=True)
     # La selección del tipo de cuenta
     typeAccount = fields.Selection(selection=TYPE_ACCOUNT_SELECTION, string='Account Type', required=True)
     
 #   Relación con Customer (Muchos a Muchos)
-    customer_ids = fields.Many2many(
-        'g3_bank.customer', 
-        'g3_bank_account_customer_rel', 
-        'account_id', 
-        'customer_id', 
-        string='Customers'
-    )
+    customer_ids = fields.Many2many('g3_bank.customer', string='Customers')
 #   Relación con Movement (Uno a Muchos)
     movement_ids = fields.One2many(
         'g3_bank.movement', 
         'account_id',
+        ondelete='cascade',
         string='Movements'
     )
 
