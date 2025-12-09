@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "g3_bank",
+    'name': "My Bank",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
