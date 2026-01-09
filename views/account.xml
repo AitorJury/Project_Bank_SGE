@@ -1,17 +1,24 @@
 <odoo>
     <data>
-        <record model="ir.actions.act_window"
-                id="account_action">
-            <field name="name">Courses</field>
-            <field name="res_model">
-                openacademy.course
-            </field>
-            <field name="view_type">form</field>
+        <record model="ir.actions.act_window" id="account_action">
+            <field name="name">My Accounts</field>
+            <field name="res_model">g3_bank.account</field>
             <field name="view_mode">tree,form</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                    Create the first course
-                </p>
+        </record>
+        <record model="ir.ui.view" id="account_form_view">
+            <field name="name">account.form</field>
+            <field name="model">g3_bank.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="typeAccount"/>
+                            <field name="balance" readonly="1"/>
+                            <field name="creditLine"/>
+                        </group>
+                    </sheet>
+                </form>
             </field>
         </record>
     </data>
