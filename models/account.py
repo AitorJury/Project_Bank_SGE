@@ -1,39 +1,29 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api
-from odoo import fields
-from odoo import models
-
+import enum
+from odoo import api, fields, models
 
 class Account(models.Model):
     _name = 'g3_bank.account'
     _description = 'Account'
 
-# Enumeración para el campo typeAccount
-    TYPE_ACCOUNT_SELECTION = [
-        ('STANDARD', 'Standard'),
-        ('CREDIT', 'Credit'),
-    ]
-
 #   El id no se define, Odoo lo añade automáticamente
 #   Utilizo name como la descripción de Account
     name = fields.Char(string='Description', required=True)
-    balance = fields.Double(string='Balance', required=True)
-    creditLine = fields.Double(string='Credit Line', required=True)
-    beginBalance = fields.Double(string='Begin Balance', required=True)
-    beginBalanceTimestamp = fields.Date(string='Begin Balance Timestamp', required=True)
+    balance = fields.Float(string='Balance', default=0.0)
+    creditLine = fields.Float(string='Credit Line', default=0.0)
+    beginBalance = fields.Float(string='Begin Balance', required=True)
+    beginBalanceTimestamp = fields.Datetime(string='Timestamp', default=fields.Datetime.now)
     # La selección del tipo de cuenta
-    typeAccount = fields.Selection(selection=TYPE_ACCOUNT_SELECTION, string='Account Type', required=True)
+    typeAccount = fields.Selection([
+        ('STANDARD', 'Standard'),
+        ('CREDIT', 'Credit'),
+    ], string='Account Type', required=True, default='STANDARD')
     
 #   Relación con Customer (Muchos a Muchos)
-    customer_ids = fields.Many2many('g3_bank.customer', string='Customers')
+    customer_ids = fields.Many2many('res.partner', string='Customers')
 #   Relación con Movement (Uno a Muchos)
-    movement_ids = fields.One2many(
-        'g3_bank.movement', 
-        'account_id',
-        ondelete='cascade',
-        string='Movements'
-    )
+    movement_ids = fields.One2many('g3_bank.movement', 'account_id', ondelete='cascade', string='Movements')
 
 #
 #     @api.depends('value')
