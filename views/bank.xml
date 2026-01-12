@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <menuitem id="main_bank_menu" name="Bank"/>
+        <record model="ir.actions.act_window" id="account_action">
+            <field name="name">My Accounts</field>
+            <field name="res_model">g3_bank.account</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="movement_action">
+            <field name="name">My Movements</field>
+            <field name="res_model">g3_bank.movement</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="customer_action">
+            <field name="name">Customers</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_accounts" name="My Accounts" parent="main_bank_menu" action="account_action"/>
+        <menuitem id="menu_movements" name="My Movements" parent="main_bank_menu" action="movement_action"/>
+        <menuitem id="menu_customers" name="Customers" parent="main_bank_menu" action="customer_action"/>
+    </data>
+</odoo>

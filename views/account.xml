@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="account_action">
+            <field name="name">My Accounts</field>
+            <field name="res_model">g3_bank.account</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.ui.view" id="account_form_view">
+            <field name="name">account.form</field>
+            <field name="model">g3_bank.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="typeAccount"/>
+                            <field name="balance" readonly="1"/>
+                            <field name="creditLine"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
