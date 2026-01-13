@@ -12,4 +12,4 @@ class Customer(models.Model):
      #name = fields.Char()
      #----------------------
      
-     account_ids=fields.Many2many('g3_bank.account')
+     #account_ids=fields.Many2many('g3_bank.account')
