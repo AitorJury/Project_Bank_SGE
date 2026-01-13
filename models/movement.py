@@ -8,7 +8,7 @@ class Movement(models.Model):
     _description = 'Movement'
     
     name = fields.Char(string = "Description", required = True)
-    timestamp = fields.DateTime(string = "TimeStamp", required = True)
+    timestamp = fields.DateTime(string = "TimeStamp", required = True, default=fields.Datetime.now)
     amount = fields.Monetary(String = "Amount", required = True)
     balance = fields.Monetary(String = "Balance", required = True)
     
