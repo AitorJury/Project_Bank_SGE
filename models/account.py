@@ -21,9 +21,9 @@ class Account(models.Model):
     ], string='Account Type', required=True, default='STANDARD')
     
 #   Relación con Customer (Muchos a Muchos)
-    customer_ids = fields.Many2many('res.partner', string='Customers')
+    customer_ids = fields.Many2many('res.users', string='Customers')
 #   Relación con Movement (Uno a Muchos)
-    movement_ids = fields.One2many('g3_bank.movement', 'account_id', ondelete='cascade', string='Movements')
+    movement_ids = fields.One2many('g3_bank.movement', 'account_id', string='Movements')
 
 #
 #     @api.depends('value')
