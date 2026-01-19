@@ -6,16 +6,36 @@ and open the template in the editor.
 -->
 <odoo> 
     <data>
-        <record model = "ir.actions.act_window"
-                id="movements"> 
-            <field name="Movement"> Movement </field>
-            <field name="res_model"> g3_bank</field>
-            </record>
-            
-            <menuitem id="main_movement_menu"
-                      name="Movement"
-                      parent="main_bank_menu"
-            />     
-        
+        <record model="ir.ui.view" id="movement_tree_view">
+            <field name="name">g3_bank.movement.tree</field>
+            <field name="model">g3_bank.movement</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="timestamp"/>
+                    <field name="account_id"/>
+                    <field name="name"/>
+                    <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="movement_form_view">
+            <field name="name">g3_bank.movement.form</field>
+            <field name="model">g3_bank.movement</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="account_id"/>
+                            <field name="name"/>
+                            <field name="timestamp"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount"/>
+                            <field name="balance" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
     </data>    
 </odoo>

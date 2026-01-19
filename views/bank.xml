@@ -15,12 +15,12 @@
 
         <record model="ir.actions.act_window" id="customer_action">
             <field name="name">Customers</field>
-            <field name="res_model">res.partner</field>
+            <field name="res_model">g3_bank.customer</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_accounts" name="My Accounts" parent="main_bank_menu" action="account_action"/>
-        <menuitem id="menu_movements" name="My Movements" parent="main_bank_menu" action="movement_action"/>
-        <menuitem id="menu_customers" name="Customers" parent="main_bank_menu" action="customer_action"/>
+        <menuitem id="menu_accounts" name="My Accounts" parent="main_bank_menu" action="account_action" sequence="10"/>
+        <menuitem id="menu_movements" name="My Movements" parent="main_bank_menu" action="movement_action" sequence="20"/>
+        <menuitem id="menu_customers" name="Customers" parent="main_bank_menu" action="customer_action" sequence="30"/>
     </data>
 </odoo>
