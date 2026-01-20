@@ -27,7 +27,9 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/bank.xml',
-        'views/account.xml',
+        #'views/account.xml',
+        #'views/usermanager.xml',
+        #'views/movement.xml',
         # 'views/views.xml',
         # 'views/templates.xml',
     ],

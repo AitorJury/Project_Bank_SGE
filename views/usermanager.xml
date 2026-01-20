@@ -1,11 +1,11 @@
 <odoo>
     <data>
-        <record model="ir.actions.act_window" id="list_users_action">
+        <!--record model="ir.actions.act_window" id="list_users_action">
             <field name="name">Customers</field>
             <field name="res_model">g3_bank.customer</field>
             <field name="view_mode">tree, form</field>
         </record>
-        <menuitem name="List" id="g3_bank.menu_list" parent=""
-              action="list_users"/>
+        <menuitem name="List" id="g3_bank.menu_list" parent="main_bank_menu"
+              action="list_users_action"/-->
     </data>
 </odoo>

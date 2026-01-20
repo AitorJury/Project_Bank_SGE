@@ -1,22 +1,48 @@
 <odoo>
     <data>
-        <record model="ir.actions.act_window" id="account_action">
-            <field name="name">My Accounts</field>
-            <field name="res_model">g3_bank.account</field>
-            <field name="view_mode">tree,form</field>
+        <record model="ir.ui.view" id="account_tree_view">
+            <field name="name">g3_bank.account.tree</field>
+            <field name="model">g3_bank.account</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="typeAccount"/>
+                    <field name="balance" sum="Total Balance"/>
+                    <field name="beginBalanceTimestamp"/>
+                </tree>
+            </field>
         </record>
         <record model="ir.ui.view" id="account_form_view">
-            <field name="name">account.form</field>
+            <field name="name">g3_bank.account.form</field>
             <field name="model">g3_bank.account</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="typeAccount"/>
-                            <field name="balance" readonly="1"/>
-                            <field name="creditLine"/>
+                            <group>
+                                <field name="name"/>
+                                <field name="typeAccount"/>
+                                <field name="customer_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="beginBalance"/>
+                                <field name="creditLine"/>
+                                <field name="balance" readonly="1"/>
+                            </group>
                         </group>
+                        <notebook>
+                            <page string="Movements">
+                                <field name="movement_ids">
+                                    <tree>
+                                        <field name="timestamp"/>
+                                        <field name="name"/>
+                                        <field name="amount"/>
+                                        <field name="balance"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
