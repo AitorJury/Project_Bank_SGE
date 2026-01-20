@@ -1,13 +1,13 @@
 <odoo>
     <data>
-        <menuitem id="main_bank_menu" name="Bank"/>
-        <record model="ir.actions.act_window" id="account_action">
+        
+        <record model="ir.actions.act_window" id="g3_account_action">
             <field name="name">My Accounts</field>
             <field name="res_model">g3_bank.account</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record model="ir.actions.act_window" id="movement_action">
+        <!--record model="ir.actions.act_window" id="movement_action">
             <field name="name">My Movements</field>
             <field name="res_model">g3_bank.movement</field>
             <field name="view_mode">tree,form</field>
@@ -17,10 +17,13 @@
             <field name="name">Customers</field>
             <field name="res_model">g3_bank.customer</field>
             <field name="view_mode">tree,form</field>
-        </record>
+        </record-->
 
-        <menuitem id="menu_accounts" name="My Accounts" parent="main_bank_menu" action="account_action" sequence="10"/>
-        <menuitem id="menu_movements" name="My Movements" parent="main_bank_menu" action="movement_action" sequence="20"/>
-        <menuitem id="menu_customers" name="Customers" parent="main_bank_menu" action="customer_action" sequence="30"/>
+        <menuitem id="main_bank_menu" name="Bank">
+            <menuitem id="menu_bank_accounts" name="My Accounts" 
+                      action="g3_account_action" />
+        </menuitem>
+        <!--menuitem id="menu_movements" name="My Movements" parent="main_bank_menu" action="movement_action" sequence="20"/>
+        <menuitem id="menu_customers" name="Customers" parent="main_bank_menu" action="customer_action" sequence="30"/-->
     </data>
 </odoo>
