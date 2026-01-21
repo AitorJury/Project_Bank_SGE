@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_g3_bank_g3_bank,g3_bank.g3_bank,model_g3_bank_g3_bank,base.group_user,1,1,1,1
+access_g3_bank_account,.,model_g3_bank_account,,1,1,1,1
+access_g3_bank_movement,.,model_g3_bank_movement,,1,1,1,1
+access_g3_bank_customer,.,model_res_users,,1,1,1,1
