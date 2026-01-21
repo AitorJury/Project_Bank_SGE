@@ -18,7 +18,6 @@ and open the template in the editor.
                 </tree>
             </field>
         </record>
-
         <record model="ir.ui.view" id="movement_form_view">
             <field name="name">g3_bank.movement.form</field>
             <field name="model">g3_bank.movement</field>
