@@ -14,3 +14,4 @@ class Customer(models.Model):
      
      account_ids=fields.Many2many('g3_bank.account')
      # users_ids=fields.Many2many('res.users')
+     

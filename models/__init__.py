@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import account, movement, customers
+from . import account, movement, customer
