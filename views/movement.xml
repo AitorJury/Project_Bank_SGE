@@ -1,23 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<odoo> 
+<odoo>
     <data>
-        <record model="ir.ui.view" id="movement_tree_view">
-            <field name="name">g3_bank.movement.tree</field>
-            <field name="model">g3_bank.movement</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="timestamp"/>
-                    <field name="account_id"/>
-                    <field name="name"/>
-                    <field name="amount"/>
-                </tree>
-            </field>
-        </record>
         <record model="ir.ui.view" id="movement_form_view">
             <field name="name">g3_bank.movement.form</field>
             <field name="model">g3_bank.movement</field>
