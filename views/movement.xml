@@ -4,18 +4,19 @@
             <field name="name">g3_bank.movement.form</field>
             <field name="model">g3_bank.movement</field>
             <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
+                        <tree>
                             <field name="account_id"/>
                             <field name="name"/>
                             <field name="timestamp"/>
-                            <field name="currency_id" invisible="1"/>
                             <field name="amount"/>
-                            <field name="balance" readonly="1"/>
-                        </group>
-                    </sheet>
-                </form>
+                            <field name="balance"/>
+                        </tree>
+                        <form>
+                            
+                            
+                            
+                            
+                        </form>
             </field>
         </record>
     </data>    
