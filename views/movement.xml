@@ -1,23 +1,16 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="movement_form_view">
-            <field name="name">g3_bank.movement.form</field>
+        <record model="ir.ui.view" id="movement_tree_view">
+            <field name="name">g3_bank.movement.tree</field>
             <field name="model">g3_bank.movement</field>
             <field name="arch" type="xml">
-                        <tree>
-                            <field name="account_id"/>
-                            <field name="name"/>
-                            <field name="timestamp"/>
-                            <field name="amount"/>
-                            <field name="balance"/>
-                        </tree>
-                        <form>
-                            
-                            
-                            
-                            
-                        </form>
+                <tree>
+                    <field name="timestamp"/>
+                    <field name="name"/>
+                    <field name="amount"/>
+                    <field name="balance"/>
+                </tree>
             </field>
         </record>
-    </data>    
+    </data>
 </odoo>
