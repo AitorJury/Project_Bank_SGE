@@ -21,7 +21,7 @@ class Account(models.Model):
     ], string='Account Type', required=True, default='STANDARD')
     
 #   Relación con Customer (Muchos a Muchos)
-    customer_ids = fields.Many2many('g3_bank.customer', string='Customers')
+    customer_ids = fields.Many2many('g3_bank.customers', string='Customers')
 #   Relación con Movement (Uno a Muchos)
     movement_ids = fields.One2many('g3_bank.movement', 'account_id', string='Movements')
 
