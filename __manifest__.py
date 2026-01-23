@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "My Bank",
-
+    'application': True,
     'summary': """
         Module for managing accounts and clients.""",
 
