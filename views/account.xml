@@ -4,13 +4,21 @@
             <field name="name">g3_bank.account.tree</field>
             <field name="model">g3_bank.account</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree 
+                    decoration-danger="balance &lt; 0" 
+                    decoration-info="typeAccount == 'CREDIT'">
                     <field name="name"/>
-                    <field name="typeAccount"/>
-                    <field name="beginBalance"/>
-                    <field name="balance"/>
-                    <field name="creditLine"/>
-                    <field name="beginBalanceTimestamp"/>
+                    <field name="typeAccount" 
+                           widget="badge" 
+                           decoration-success="typeAccount == 'STANDARD'" 
+                           decoration-warning="typeAccount == 'CREDIT'"/>
+                    <field name="beginBalance" 
+                           sum="Total Initial"/>
+                    <field name="balance" 
+                           sum="Total Balance"/>
+                    <field name="creditLine" 
+                           attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
+                    <field name="beginBalanceTimestamp" widget="date"/>
                 </tree>
             </field>
         </record>
@@ -18,13 +26,43 @@
             <field name="name">g3_bank.account.form</field>
             <field name="model">g3_bank.account</field>
             <field name="arch" type="xml">
-                <form>
-                    <field name="name"/>
-                    <field name="typeAccount"/>
-                    <field name="beginBalance"/>
-                    <field name="balance"/>
-                    <field name="creditLine"/>
-                    <field name="beginBalanceTimestamp"/>
+                <form string="Account Details">
+                    <header>
+                        </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Ej. Cuenta Corriente Personal"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Información de Cuenta">
+                                <field name="typeAccount" widget="radio" options="{'horizontal': true}"/>
+                                <field name="beginBalanceTimestamp" readonly="1"/>
+                            </group>
+                            <group string="Saldos y Límites">
+                                <field name="beginBalance"/>
+                                <field name="balance" readonly="1"/>
+                                <field name="creditLine" attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')], 'required': [('typeAccount', '=', 'CREDIT')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="General Information">
+                                <group>
+                                    </group>
+                            </page>
+                            <page string="Movements">
+                                <field name="movements" readonly="1">
+                                    <tree string="Account Movements">
+                                        <field name="name"/>
+                                        <field name="timestamp"/>
+                                        <field name="amount" sum="Total Movements"/>
+                                        <field name="balance"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
