@@ -29,6 +29,7 @@
         'views/account.xml',
         'views/movement.xml',
         'views/bank.xml',
+        'views/customer.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

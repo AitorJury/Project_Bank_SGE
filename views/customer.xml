@@ -1,4 +1,40 @@
 <odoo>
     <data>
+        <record model="ir.ui.view" id="customer_tree_view">
+            <field name="name">g3_bank.customer.tree</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="id"/>
+                </field>
+                <field name="lang" position="replace">
+                    <field name="city"/>
+                </field>
+                <field name="login_date" position="replace">
+                    <field name="phone"/>
+                </field>
+                <field name="phone" position="after">
+                    <field name="zip"/>
+                    <field name="street"/>
+                    <field name="state_id"/>
+                    <field name="account_ids"/>
+                </field>
+
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="customer_form_view">
+            <field name="name">g3_bank.customer.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_simple_form"/>
+            <field name="arch" type="xml">
+                <field name="phone" position="after">
+                    <field name="city"/>
+                </field>
+            </field>
+        </record>
+
     </data>
 </odoo>
