@@ -52,11 +52,11 @@
                                     </group>
                             </page>
                             <page string="Movements">
-                                <field name="movements" readonly="1">
+                                <field name="movement_ids" readonly="1">
                                     <tree string="Account Movements">
                                         <field name="name"/>
                                         <field name="timestamp"/>
-                                        <field name="amount" sum="Total Movements"/>
+                                        <field name="amount" sum="Total Amount"/>
                                         <field name="balance"/>
                                     </tree>
                                 </field>
