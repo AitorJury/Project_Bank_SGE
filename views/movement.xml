@@ -5,6 +5,7 @@
             <field name="model">g3_bank.movement</field>
             <field name="arch" type="xml">
                 <tree>
+                    <field name="account_id"/>
                     <field name="timestamp"/>
                     <field name="name"/>
                     <field name="amount"/>
@@ -12,5 +13,28 @@
                 </tree>
             </field>
         </record>
-    </data>
+        <record model="ir.ui.view" id="movement_form_view">
+            <field name="name">g3_bank.movement.form</field>
+            <field name="model">g3_bank.movement</field>
+            <field name="arch" type="xml">
+                <form string="Bank Movement">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly': [('id', '!=', False)]}"/>
+                                <field name="amount" attrs="{'readonly': [('id', '!=', False)]}"/>
+                                <field name="account_id" attrs="{'readonly': [('id', '!=', False)]}"/>
+                            </group>
+                            <group>
+                                <field name="timestamp" readonly="1"/>
+                                <field name="balance" readonly="1"/>
+                                <field name="currency_id" readonly="1"/>
+                                <field name="id" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>account_id
 </odoo>
