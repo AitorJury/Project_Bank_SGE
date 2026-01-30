@@ -28,7 +28,7 @@
             <field name="arch" type="xml">
                 <form string="Account Details">
                     <header>
-                        </header>
+                    </header>
                     <sheet>
                         <div class="oe_title">
                             <h1>
@@ -49,17 +49,16 @@
                         <notebook>
                             <page string="General Information">
                                 <group>
-                                    </group>
+                                </group>
                             </page>
                             <page string="Movements">
-                                <field name="movement_ids" readonly="1">
-                                    <tree string="Account Movements">
-                                        <field name="name"/>
-                                        <field name="timestamp"/>
-                                        <field name="amount" sum="Total Amount"/>
-                                        <field name="balance"/>
-                                    </tree>
-                                </field>
+                                <header>
+                                    <button name="%(g3_movement_action)d"
+                                            string="Create Movement"
+                                            type="action"
+                                            class="oe_highlight"/>
+                                </header>
+                                <field name="movement_ids" readonly="1"/>
                             </page>
                         </notebook>
                     </sheet>

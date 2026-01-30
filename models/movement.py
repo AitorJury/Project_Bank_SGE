@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-
-from odoo import models, fields, api
+from odoo import api
+from odoo import fields
+from odoo import models
 
 
 class Movement(models.Model):
@@ -11,12 +11,18 @@ class Movement(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency', 
                                   default=lambda self: self.env.company.currency_id)
 
-    name = fields.Char(string = "Description", required = True)
-    timestamp = fields.Datetime(string = "TimeStamp", required = True, default=fields.Datetime.now)
-    amount = fields.Monetary(string = "Amount", currency_field='currency_id', default=0.0)
-    balance = fields.Monetary(string = "Balance", currency_field='currency_id', default=0.0)
+    name = fields.Selection([
+                            ('payment', 'Payment'),
+                            ('deposit', 'Deposit')
+                            ], string="Description", required=True)
+                            
+    timestamp = fields.Datetime(string="Date", required=True, default=fields.Datetime.now, readonly=True)
+    amount = fields.Monetary(string="Amount", currency_field='currency_id', default=0.0)
+    balance = fields.Monetary(string="Balance", currency_field='currency_id', default=0.0 , readonly =True)
     
     account_id = fields.Many2one('g3_bank.account', string="Account")
+    
+    
     
 #     value = fields.Integer()
 #     value2 = fields.Float(compute="_value_pc", store=True)
