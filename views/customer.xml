@@ -43,7 +43,7 @@
                     </group>
                     <notebook>
                         <page string="Cuentas" name="detalles_cuentas">
-                            <field name="account_ids" readonly="1"/>
+                            <field name="account_ids" />
                         </page>
                     </notebook>
                 </group>
