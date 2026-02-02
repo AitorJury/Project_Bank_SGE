@@ -21,7 +21,7 @@
         <menuitem id="main_bank_menu" name="Bank"/>
 
         <menuitem id="menu_bank_accounts" name="My Accounts" parent="main_bank_menu" action="g3_account_action"/>
-        <menuitem id="menu_bank_movements" name="My Movements" parent="main_bank_menu" action="g3_movement_action"/>
-        <menuitem id="menu_bank_customers" name="Customers" parent="main_bank_menu" action="g3_customer_action"/>
+        <!--menuitem id="menu_bank_movements" name="My Movements" parent="main_bank_menu" action="g3_movement_action"/>
+        <menuitem id="menu_bank_customers" name="Customers" parent="main_bank_menu" action="g3_customer_action"/-->
     </data>
 </odoo>

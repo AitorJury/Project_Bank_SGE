@@ -1,5 +1,20 @@
 <odoo>
     <data>
+        <record model="ir.ui.view" id="account_search_view">
+            <field name="name">g3_bank.account.search</field>
+            <field name="model">g3_bank.account</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Description"/>
+                    <filter name="filter_standard" string="Standard Accounts" domain="[('typeAccount','=','STANDARD')]"/>
+                    <filter name="filter_credit" string="Credit Accounts" domain="[('typeAccount','=','CREDIT')]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_type" string="Account Type" context="{'group_by':'typeAccount'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="account_tree_view">
             <field name="name">g3_bank.account.tree</field>
             <field name="model">g3_bank.account</field>
@@ -22,33 +37,40 @@
                 </tree>
             </field>
         </record>
+
         <record model="ir.ui.view" id="account_form_view">
             <field name="name">g3_bank.account.form</field>
             <field name="model">g3_bank.account</field>
             <field name="arch" type="xml">
                 <form string="Account Details">
-                    <header>
-                    </header>
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="name" placeholder="Ej. Cuenta Corriente Personal"/>
+                                <field name="name" placeholder="Ej. Personal Savings Account"/>
                             </h1>
                         </div>
                         <group>
-                            <group string="Información de Cuenta">
+                            <group string="Account Information">
                                 <field name="typeAccount" widget="radio" options="{'horizontal': true}"/>
                                 <field name="beginBalanceTimestamp" readonly="1"/>
                             </group>
-                            <group string="Saldos y Límites">
+                            <group string="Balances &amp; Limits">
                                 <field name="beginBalance"/>
                                 <field name="balance" readonly="1"/>
-                                <field name="creditLine" attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')], 'required': [('typeAccount', '=', 'CREDIT')]}"/>
+                                <field name="creditLine" attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="General Information">
-                                <group>
+                                <group string="Account Owners">
+                                    <field name="customer_ids" readonly="1" nolabel="1">
+                                        <tree>
+                                            <field name="name" string="Customer"/>
+                                            <field name="email"/>
+                                            <field name="phone"/>
+                                            <field name="city"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                             <page string="Movements">
