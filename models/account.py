@@ -18,7 +18,7 @@ class Account(models.Model):
 #   El id no se define, Odoo lo añade automáticamente
 #   Utilizo name como la descripción de Account
     name = fields.Char(string='Description', required=True)
-    balance = fields.Monetary(string='Balance', currency_field='currency_id', default=0.0)
+    balance = fields.Monetary(string='Balance', currency_field='currency_id', compute='_compute_balance', store=True)
     creditLine = fields.Monetary(string='Credit Line', currency_field='currency_id', default=0.0)
     beginBalance = fields.Monetary(string='Begin Balance', currency_field='currency_id', required=True)
     beginBalanceTimestamp = fields.Datetime(string='Opening Date', default=fields.Datetime.now)
