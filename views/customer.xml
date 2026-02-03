@@ -33,7 +33,7 @@
                         <group>
                             <field name="city"/>
                             <field name="zip"/>
-                            <field name="mobile"/>
+                            <field name="phone" widget="phone"/>
                         </group>
                         <group>
                             <field name="street"/>
@@ -49,6 +49,33 @@
                 </group>
 
             </field>
+        </record>
+
+        <record model="ir.ui.view" id="customer_search_view">
+            <field name="name">g3_bank.customer.search</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_search"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="city" string="Ciudad"/>
+                    <field name="zip" string="Codigo Postal"/>
+                </field>
+                <filter name="filter_no_share" position="after">
+                    <!-- Separador visual en la lista -->
+                    <separator/>
+                <!-- Añadir filtro para solo aparezcan los clientes con ciudades asociadas-->
+                    <filter string="Clientes con Ciudad" name="filter_with_city" domain="[('city', '!=', False)]"/>
+                </filter>
+<!--                Añade agrupamiento por ciudad y por codigo postal, al poner contexto lo añade directamente-->
+<!--                a la pestaña de group by hereadad-->
+                <filter name="Inactive" position="after">
+                    <group expand="0" string="Group by">
+                        <filter string="City" name="group_by_city" context="{'group_by': 'city'}"/>
+                        <filter string="Zip" name="group_by_zip" context="{'group_by': 'zip'}"/>
+                    </group>
+                </filter>
+            </field>
+
         </record>
 
     </data>
