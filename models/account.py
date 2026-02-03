@@ -36,15 +36,37 @@ class Account(models.Model):
     @api.depends('beginBalance', 'movement_ids.amount', 'movement_ids.name')
     def _compute_balance(self):
         for record in self:
-            total = record.beginBalance
+            bal = record.beginBalance
             for move in record.movement_ids:
                 # Si el movimiento es depósito suma, si es pago resta.
                 if move.name == 'deposit':
-                    total += move.amount
+                    bal += move.amount
                 elif move.name == 'payment':
-                    total -= move.amount
+                    bal -= move.amount
                     
-            record.balance = total
+            record.balance = bal
+
+#   Valida que el begin balance no sea negativo.
+    @api.constrains('beginBalance')
+    def _check_begin_balance(self):
+        for record in self:
+            if record.beginBalance < 0:
+                raise ValidationError("The opening balance cannot be negative.")
+
+#   Solo permite modificar 'name' y 'creditLine' (si es CREDIT).
+    def write(self, vals):
+        protected_fields = ['beginBalance', 'typeAccount']
+        for field in protected_fields:
+            if field in vals:
+                raise UserError("The initial balance and account type are immutable after creation.")
+        return super(Account, self).write(vals)
+
+#   Solo se pueden borrar cuentas sin movimientos.
+    def unlink(self):
+        for record in self:
+            if record.movement_ids:
+                raise UserError("Cannot delete an account that has movements.")
+        return super(Account, self).unlink()
     
 #   Lógica para que salten advertencias cuando intentan cambiar cosas.
 #    @api.onchange('beginBalance', 'typeAccount')
@@ -68,28 +90,6 @@ class Account(models.Model):
 #                    'message': "Credit line can only be modified for CREDIT accounts."
 #                }
 #            }
-
-#   Valida que el begin balance no sea negativo.
-    @api.constrains('beginBalance')
-    def _check_begin_balance(self):
-        for record in self:
-            if record.beginBalance < 0:
-                raise ValidationError("The opening balance cannot be negative.")
-
-#   Solo permite modificar 'name' y 'creditLine' (si es CREDIT).
-    def write(self, vals):
-        protected_fields = ['beginBalance', 'typeAccount']
-        for field in protected_fields:
-            if field in vals:
-                raise UserError("The initial balance and account type are immutable after creation.")
-        return super(Account, self).write(vals)
-
-#   Solo se pueden borrar cuentas sin movimientos.
-    def unlink(self):
-        for record in self:
-            if record.movement_ids:
-                raise UserError("Cannot delete an account that has movements.")
-        return super(Account, self).unlink()
 
 #   Accion de crear movimiento.
 #    def action_create_movement(self):
