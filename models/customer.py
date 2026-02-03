@@ -79,17 +79,17 @@ class Customer(models.Model):
                      }
                  }
 
-     @api.constrains('mobile')
+     @api.constrains('phone')
      def check_phone_format(self):
          for record in self:
-             if record.mobile and not record.mobile.isdigit():
+             if record.phone and not record.phone.isdigit():
                  raise ValidationError('El telefono solo debe contener digitos')
 
-     @api.onchange('mobile')
+     @api.onchange('phone')
      def onchange_phone(self):
-         if self.mobile:
+         if self.phone:
              # Usamos regex para verificar que sean exactamente 5 números
-             if not self.mobile.isdigit():
+             if not self.phone.isdigit():
                  return {
                      'warning': {
                          'title': 'Telefono no valido',
