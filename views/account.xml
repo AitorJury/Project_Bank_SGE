@@ -6,8 +6,8 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name" string="Description"/>
-                    <filter name="filter_standard" string="Standard Accounts" domain="[('typeAccount','=','STANDARD')]"/>
-                    <filter name="filter_credit" string="Credit Accounts" domain="[('typeAccount','=','CREDIT')]"/>
+                    <filter name="filter_standard" string="Standard" domain="[('typeAccount','=','STANDARD')]"/>
+                    <filter name="filter_credit" string="Credit" domain="[('typeAccount','=','CREDIT')]"/>
                     <group expand="0" string="Group By">
                         <filter name="group_type" string="Account Type" context="{'group_by':'typeAccount'}"/>
                     </group>
@@ -44,7 +44,7 @@
             <field name="arch" type="xml">
                 <form string="Account Details">
                     <header>
-                        <button string="Back to Accounts" special="cancel" class="btn-secondary"/>
+                        <button string="Discard Changes" special="cancel" class="btn-secondary"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -54,31 +54,22 @@
                         </div>
                         <group>
                             <group string="Account Information">
-                                <field name="typeAccount" widget="radio" 
+                                <field name="typeAccount" 
+                                       widget="radio" 
                                        options="{'horizontal': true}" 
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
-                                <field name="beginBalance" 
                                        attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="beginBalanceTimestamp" readonly="1"/>
                             </group>
-                            <group string="Balances &amp; Limits">
-                                <field name="balance" readonly="1"/>
-                                <field name="creditLine" attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
+                            <group string="Financials">
+                                <field name="beginBalance" 
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                <field name="balance"
+                                       readonly="1"/>
+                                <field name="creditLine"
+                                       attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
                             </group>
                         </group>
                         <notebook>
-                            <page string="General Information">
-                                <group string="Account Owners">
-                                    <field name="customer_ids" readonly="1" nolabel="1">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="login" string="Email"/>
-                                            <field name="phone" related="partner_id.phone"/>
-                                            <field name="city" related="partner_id.city"/>
-                                        </tree>
-                                    </field>
-                                </group>
-                            </page>
                             <page string="Movements">
                                 <header>
                                     <button name="%(g3_movement_action)d"
@@ -86,7 +77,8 @@
                                             type="action"
                                             class="oe_highlight"/>
                                 </header>
-                                <field name="movement_ids" readonly="1"/>
+                                <field name="movement_ids"
+                                       readonly="1"/>
                             </page>
                         </notebook>
                     </sheet>

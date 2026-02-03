@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import enum
 from odoo import api
 from odoo import fields
 from odoo import models
@@ -48,27 +47,27 @@ class Account(models.Model):
             record.balance = total
     
 #   Lógica para que salten advertencias cuando intentan cambiar cosas.
-    @api.onchange('beginBalance', 'typeAccount')
-    def _onchange_protected_fields(self):
-        # 'id' solo existe si el registro ya está en la base de datos.
-        if self._origin.id:
-            return {
-                'warning': {
-                    'title': "Modification Prohibited",
-                    'message': "You are attempting to modify a protected field. Changes to 'Begin Balance' or 'Account Type' will not be saved."
-                }
-            }
+#    @api.onchange('beginBalance', 'typeAccount')
+#    def _onchange_protected_fields(self):
+#        # 'id' solo existe si el registro ya está en la base de datos.
+#        if self._origin.id:
+#            return {
+#                'warning': {
+#                    'title': "Modification Prohibited",
+#                    'message': "You are attempting to modify a protected field. Changes to 'Begin Balance' or 'Account Type' will not be saved."
+#                }
+#            }
 
 #   Validación para el límite de crédito.
-    @api.onchange('creditLine')
-    def _onchange_credit_line(self):
-        if self._origin.id and self.typeAccount == 'STANDARD':
-            return {
-                'warning': {
-                    'title': "Invalid Action",
-                    'message': "Credit line can only be modified for CREDIT accounts."
-                }
-            }
+#    @api.onchange('creditLine')
+#    def _onchange_credit_line(self):
+#        if self._origin.id and self.typeAccount == 'STANDARD':
+#            return {
+#                'warning': {
+#                    'title': "Invalid Action",
+#                    'message': "Credit line can only be modified for CREDIT accounts."
+#                }
+#            }
 
 #   Valida que el begin balance no sea negativo.
     @api.constrains('beginBalance')
@@ -82,7 +81,7 @@ class Account(models.Model):
         protected_fields = ['beginBalance', 'typeAccount']
         for field in protected_fields:
             if field in vals:
-                raise UserError("The field '%s' is protected and cannot be modified." % field)
+                raise UserError("The initial balance and account type are immutable after creation.")
         return super(Account, self).write(vals)
 
 #   Solo se pueden borrar cuentas sin movimientos.
@@ -92,7 +91,7 @@ class Account(models.Model):
                 raise UserError("Cannot delete an account that has movements.")
         return super(Account, self).unlink()
 
-#   Acci�n de crear movimiento.
+#   Accion de crear movimiento.
     def action_create_movement(self):
         self.ensure_one()
         return {
