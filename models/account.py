@@ -34,11 +34,18 @@ class Account(models.Model):
     movement_ids = fields.One2many('g3_bank.movement', 'account_id', string='Movements')
 
 #   Lógica para sumar el balance total.
-    @api.depends('beginBalance', 'movement_ids.amount')
+    @api.depends('beginBalance', 'creditLine', 'movement_ids.amount', 'movement_ids.name')
     def _compute_balance(self):
         for record in self:
-            total_movements = sum(record.movement_ids.mapped('amount'))
-            record.balance = record.beginBalance + total_movements
+            total = record.beginBalance + record.creditLine
+            for move in record.movement_ids:
+                # Si el movimiento es depósito suma, si es pago resta.
+                if move.name == 'deposit':
+                    total += move.amount
+                elif move.name == 'payment':
+                    total -= move.amount
+            
+            record.balance = total
     
 #   Lógica para que salten advertencias cuando intentan cambiar cosas.
     @api.onchange('beginBalance', 'typeAccount')
@@ -72,17 +79,10 @@ class Account(models.Model):
 
 #   Solo permite modificar 'name' y 'creditLine' (si es CREDIT).
     def write(self, vals):
-        for record in self:
-            # Si es STANDARD y vienen cambios en creditLine, error.
-            if 'creditLine' in vals and record.typeAccount == 'STANDARD':
-                raise UserError("Credit line can only be modified for CREDIT accounts.")
-            
-            # Bloqueo estricto de campos no permitidos.
-            allowed = {'name', 'creditLine'}
-            for field in vals.keys():
-                if field not in allowed:
-                    raise UserError("Modification of '{}' is not allowed for existing accounts.".format(field))
-        
+        protected_fields = ['beginBalance', 'typeAccount']
+        for field in protected_fields:
+            if field in vals:
+                raise UserError("The field '%s' is protected and cannot be modified." % field)
         return super(Account, self).write(vals)
 
 #   Solo se pueden borrar cuentas sin movimientos.
@@ -92,7 +92,7 @@ class Account(models.Model):
                 raise UserError("Cannot delete an account that has movements.")
         return super(Account, self).unlink()
 
-#   Acción de crear movimiento.
+#   Acci�n de crear movimiento.
     def action_create_movement(self):
         self.ensure_one()
         return {

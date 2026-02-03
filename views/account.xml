@@ -43,6 +43,9 @@
             <field name="model">g3_bank.account</field>
             <field name="arch" type="xml">
                 <form string="Account Details">
+                    <header>
+                        <button string="Back to Accounts" special="cancel" class="btn-secondary"/>
+                    </header>
                     <sheet>
                         <div class="oe_title">
                             <h1>
@@ -51,11 +54,14 @@
                         </div>
                         <group>
                             <group string="Account Information">
-                                <field name="typeAccount" widget="radio" options="{'horizontal': true}"/>
+                                <field name="typeAccount" widget="radio" 
+                                       options="{'horizontal': true}" 
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                <field name="beginBalance" 
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="beginBalanceTimestamp" readonly="1"/>
                             </group>
                             <group string="Balances &amp; Limits">
-                                <field name="beginBalance"/>
                                 <field name="balance" readonly="1"/>
                                 <field name="creditLine" attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
                             </group>
@@ -65,10 +71,10 @@
                                 <group string="Account Owners">
                                     <field name="customer_ids" readonly="1" nolabel="1">
                                         <tree>
-                                            <field name="name" string="Customer"/>
-                                            <field name="email"/>
-                                            <field name="phone"/>
-                                            <field name="city"/>
+                                            <field name="name"/>
+                                            <field name="login" string="Email"/>
+                                            <field name="phone" related="partner_id.phone"/>
+                                            <field name="city" related="partner_id.city"/>
                                         </tree>
                                     </field>
                                 </group>
