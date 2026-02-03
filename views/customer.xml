@@ -34,6 +34,7 @@
                             <field name="city"/>
                             <field name="zip"/>
                             <field name="phone" widget="phone"/>
+
                         </group>
                         <group>
                             <field name="street"/>

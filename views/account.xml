@@ -1,30 +1,87 @@
 <odoo>
     <data>
+        <record model="ir.ui.view" id="account_search_view">
+            <field name="name">g3_bank.account.search</field>
+            <field name="model">g3_bank.account</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Description"/>
+                    <filter name="filter_standard" string="Standard" domain="[('typeAccount','=','STANDARD')]"/>
+                    <filter name="filter_credit" string="Credit" domain="[('typeAccount','=','CREDIT')]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_type" string="Account Type" context="{'group_by':'typeAccount'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="account_tree_view">
             <field name="name">g3_bank.account.tree</field>
             <field name="model">g3_bank.account</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree 
+                    decoration-danger="balance &lt; 0" 
+                    decoration-info="typeAccount == 'CREDIT'">
                     <field name="name"/>
-                    <field name="typeAccount"/>
-                    <field name="beginBalance"/>
-                    <field name="balance"/>
-                    <field name="creditLine"/>
-                    <field name="beginBalanceTimestamp"/>
+                    <field name="typeAccount" 
+                           widget="badge" 
+                           decoration-success="typeAccount == 'STANDARD'" 
+                           decoration-warning="typeAccount == 'CREDIT'"/>
+                    <field name="beginBalance" 
+                           sum="Total Initial"/>
+                    <field name="balance" 
+                           sum="Total Balance"/>
+                    <field name="creditLine" 
+                           attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
+                    <field name="beginBalanceTimestamp" widget="date"/>
                 </tree>
             </field>
         </record>
+
         <record model="ir.ui.view" id="account_form_view">
             <field name="name">g3_bank.account.form</field>
             <field name="model">g3_bank.account</field>
             <field name="arch" type="xml">
-                <form>
-                    <field name="name"/>
-                    <field name="typeAccount"/>
-                    <field name="beginBalance"/>
-                    <field name="balance"/>
-                    <field name="creditLine"/>
-                    <field name="beginBalanceTimestamp"/>
+                <form string="Account Details">
+                    <header>
+                        <button string="Discard Changes" special="cancel" class="btn-secondary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Ej. Personal Savings Account"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Account Information">
+                                <field name="typeAccount" 
+                                       widget="radio" 
+                                       options="{'horizontal': true}" 
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                <field name="beginBalanceTimestamp" readonly="1"/>
+                            </group>
+                            <group string="Financials">
+                                <field name="beginBalance" 
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                <field name="balance"
+                                       readonly="1"/>
+                                <field name="creditLine"
+                                       attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Movements">
+                                <header>
+                                    <button name="%(g3_movement_action)d"
+                                            string="Create Movement"
+                                            type="action"
+                                            class="oe_highlight"/>
+                                </header>
+                                <field name="movement_ids"
+                                       readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
