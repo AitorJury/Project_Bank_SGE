@@ -33,17 +33,17 @@ class Account(models.Model):
     movement_ids = fields.One2many('g3_bank.movement', 'account_id', string='Movements')
 
 #   Lógica para sumar el balance total.
-    @api.depends('beginBalance', 'creditLine', 'movement_ids.amount', 'movement_ids.name')
+    @api.depends('beginBalance', 'movement_ids.amount', 'movement_ids.name')
     def _compute_balance(self):
         for record in self:
-            total = record.beginBalance + record.creditLine
+            total = record.beginBalance
             for move in record.movement_ids:
                 # Si el movimiento es depósito suma, si es pago resta.
                 if move.name == 'deposit':
                     total += move.amount
                 elif move.name == 'payment':
                     total -= move.amount
-            
+                    
             record.balance = total
     
 #   Lógica para que salten advertencias cuando intentan cambiar cosas.
@@ -92,13 +92,13 @@ class Account(models.Model):
         return super(Account, self).unlink()
 
 #   Accion de crear movimiento.
-    def action_create_movement(self):
-        self.ensure_one()
-        return {
-            'name': 'New Movement',
-            'type': 'ir.actions.act_window',
-            'res_model': 'g3_bank.movement',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_account_id': self.id},
-        }
+#    def action_create_movement(self):
+#        self.ensure_one()
+#        return {
+#            'name': 'New Movement',
+#            'type': 'ir.actions.act_window',
+#            'res_model': 'g3_bank.movement',
+#            'view_mode': 'form',
+#            'target': 'new',
+#            'context': {'default_account_id': self.id},
+#        }
