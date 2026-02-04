@@ -75,7 +75,8 @@
                                     <button name="%(g3_movement_action)d"
                                             string="Create Movement"
                                             type="action"
-                                            class="oe_highlight"/>
+                                            class="oe_highlight"
+                                            context="{'default_account_id': active_id}"/>
                                 </header>
                                 <field name="movement_ids"
                                        readonly="1"/>

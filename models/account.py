@@ -102,3 +102,4 @@ class Account(models.Model):
 #            'target': 'new',
 #            'context': {'default_account_id': self.id},
 #        }
+

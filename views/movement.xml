@@ -10,9 +10,12 @@
                     <field name="name"/>
                     <field name="amount"/>
                     <field name="balance"/>
+                    <field name="account_type" invisible="1"/> 
+                    <field name="credit_limit_info" attrs="{'invisible': [('account_type', '!=', 'CREDIT')]}"/>
                 </tree>
             </field>
         </record>
+
         <record model="ir.ui.view" id="movement_form_view">
             <field name="name">g3_bank.movement.form</field>
             <field name="model">g3_bank.movement</field>
@@ -23,7 +26,14 @@
                             <group>
                                 <field name="name" attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="amount" attrs="{'readonly': [('id', '!=', False)]}"/>
-                                <field name="account_id" attrs="{'readonly': [('id', '!=', False)]}"/>
+                                <field name="account_id" 
+                                       readonly="1" 
+                                       force_save="1" 
+                                       options="{'no_open': True, 'no_create': True, 'no_quick_create': True}"/>
+                                
+                                <field name="account_type" invisible="1"/>
+                                
+                                <field name="credit_limit_info" attrs="{'invisible': [('account_type', '!=', 'CREDIT')]}"/>
                             </group>
                             <group>
                                 <field name="timestamp" readonly="1"/>
