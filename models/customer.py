@@ -10,16 +10,14 @@ EMAIL_PATTERN = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 ONLY_LETTERS_PATTERN = r'^[a-zA-Z]+$'
 
 class Customer(models.Model):
-     #_name = 'g3_bank.customer'
+
      _description = 'Customer'
      _inherit = 'res.users'
-
-     #name equivale al campo descripcion
-     #name = fields.Char()
-     #----------------------
-
-     account_ids=fields.Many2many('g3_bank.account')
-     # users_ids=fields.Many2many('res.users')
+     account_ids=fields.Many2many('g3_bank.account',
+                                  #Solo muestran las cuentas que tengan saldo inicial y no esten asignadas a un cliente
+                                  domain=[('customer_ids', '=', False),('balance','>',0)],
+                                  string='Cuentas con Saldo Inicial'
+                                  )
 
 
      @api.constrains('login')
