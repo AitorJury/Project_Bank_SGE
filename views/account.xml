@@ -66,7 +66,8 @@
                                 <field name="balance"
                                        readonly="1"/>
                                 <field name="creditLine"
-                                       attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
+                                       attrs="{'column_invisible': [('typeAccount', '!=', 'CREDIT')]}"
+                                       optional="show"/>
                             </group>
                         </group>
                         <notebook>
