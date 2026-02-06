@@ -1,4 +1,4 @@
-<odoo>
+    <odoo>
     <data>
         <record model="ir.ui.view" id="movement_tree_view">
             <field name="name">g3_bank.movement.tree</field>
@@ -8,10 +8,10 @@
                     <field name="account_id"/>
                     <field name="timestamp"/>
                     <field name="name"/>
-                    <field name="amount"/>
+                    <field name="amount" sum="Total Movements"/>
                     <field name="balance"/>
                     <field name="account_type" invisible="1"/> 
-                    <field name="credit_limit_info" attrs="{'invisible': [('account_type', '!=', 'CREDIT')]}"/>
+                    <field name="credit_limit_info" attrs="{'column_invisible': [('account_type', '!=', 'CREDIT')]}"/>
                 </tree>
             </field>
         </record>
@@ -27,12 +27,11 @@
                                 <field name="name" attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="amount" attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="account_id" 
-                                       readonly="1" 
-                                       force_save="1" 
-                                       options="{'no_open': True, 'no_create': True, 'no_quick_create': True}"/>
-                                
+                                           readonly="1" 
+                                />
+
                                 <field name="account_type" invisible="1"/>
-                                
+
                                 <field name="credit_limit_info" attrs="{'invisible': [('account_type', '!=', 'CREDIT')]}"/>
                             </group>
                             <group>

@@ -7,7 +7,7 @@ class Movement(models.Model):
     _name = 'g3_bank.movement'
     _description = 'Movement'
     
-    # Campo técnico necesario para Monetary
+
     currency_id = fields.Many2one('res.currency', string='Currency', 
                                   default=lambda self: self.env.company.currency_id)
 
@@ -18,37 +18,82 @@ class Movement(models.Model):
                             
     timestamp = fields.Datetime(string="Date", required=True, default=fields.Datetime.now, readonly=True)
     amount = fields.Monetary(string="Amount", currency_field='currency_id', default=0.0)
-    balance = fields.Monetary(related='account_id.balance', string="Balance", currency_field='currency_id', default=0.0, readonly=True)
+    balance = fields.Monetary(string="Balance", currency_field='currency_id', default=0.0, readonly=True)
     
     #Ponemos un campo relacional que lo coge desde cuentas para poder ver el credito 
     credit_limit_info = fields.Monetary(related='account_id.creditLine', string="Account Credit")
     account_type = fields.Selection(related='account_id.typeAccount')
     
-    credit_available = fields.Monetary(
-                                       string="Credit ", 
-                                       compute="_compute_credit_available",
-                                       currency_field='currency_id'
-                                       )
-    
-    
     account_id = fields.Many2one('g3_bank.account', string="Account", readonly=True)
     
-    # En models/movement.py
+
+    
+    @api.model
+    def create(self, vals):
+        #creamos movimiento
+        record = super(Movement, self).create(vals)
+        
+        # Capturamos el balance real y lo pasamos otra vez
+        record.balance = record.account_id.balance
+        return record
     
     @api.constrains('amount', 'name', 'account_id')
-    def _validationAmountError(self):
+    def _check_amount_and_liquidity(self):
         for r in self:
             if r.amount <= 0:
                 raise ValidationError("The amount must be greater than 0.")
-        
+            
             if r.name == 'payment':
-                total_disponible = r.account_id.balance + r.account_id.creditLine
-            
+                #Calculamos el balance que quedaria
+                saldo_previo = r.account_id.beginBalance
+                for move in r.account_id.movement_ids:
+                    if move.id != r.id and move._origin.id != r.id:
+                        if move.name == 'deposit':
+                            saldo_previo += move.amount
+                        elif move.name == 'payment':
+                            saldo_previo -= move.amount
+                
+                limite_credito = r.account_id.creditLine if r.account_id.typeAccount == 'CREDIT' else 0.0
+                total_disponible = saldo_previo + limite_credito
+                
+                # Si el pago es mayor que lo que tengo mas mi credito salta excepcion
                 if r.amount > total_disponible:
-                    raise ValidationError("The balance and credit are insufficient.")
+                    raise ValidationError(
+                        "Insufficient funds.\n"
+                        "Available: %.2f (Balance: %.2f + Credit: %.2f)\n"
+                        "Attempted payment: %.2f" % 
+                        (total_disponible, saldo_previo, limite_credito, r.amount)
+                    )
+
+    # Para calcular balance
+    @api.depends('account_id.creditLine', 'account_id.balance')
+    def _compute_credit_available(self):
+        for r in self:
+            if r.account_type == 'CREDIT':
+                
+                usado = abs(min(r.account_id.balance, 0.0))
+                r.credit_available = r.account_id.creditLine - usado
+            else:
+                r.credit_available = 0.0
+    #Metodo para borrar el ultimo movimiento
+    def unlink(self):
+        for record in self:
+            #Busca cual es el ultimo movimiento de esta cuenta
+            last_movement = self.search([
+                ('account_id', '=', record.account_id.id)
+            ], order='timestamp desc, id desc', limit=1)
+
+            # Esto valida que solo puedas borrar el ultimo movimiento
+            if record.id != last_movement.id:
+                raise ValidationError(
+                    "Only the last account movement can be deleted ."
+                )
+
+            # Actualiza el saldo de la cuenta antes de borrar
+            # Si era deposito restamos al saldo si es pago sumo.
+            amount_to_return = record.amount if record.name == 'deposit' else -record.amount
             
-                if r.amount > r.account_id.balance:
-                    credit_necesario = r.amount - r.account_id.balance
-                    r.account_id.creditLine -= credit_necesario
-                    
-                    
+            #Mandamos el balance 
+            record.account_id.balance -= amount_to_return
+
+        return super(Movement, self).unlink()
