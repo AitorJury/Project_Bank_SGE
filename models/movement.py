@@ -18,31 +18,37 @@ class Movement(models.Model):
                             
     timestamp = fields.Datetime(string="Date", required=True, default=fields.Datetime.now, readonly=True)
     amount = fields.Monetary(string="Amount", currency_field='currency_id', default=0.0)
-    balance = fields.Monetary(string="Balance", currency_field='currency_id', default=0.0, readonly=True, compute="_compute_movement_balance")
+    balance = fields.Monetary(related='account_id.balance', string="Balance", currency_field='currency_id', default=0.0, readonly=True)
+    
+    #Ponemos un campo relacional que lo coge desde cuentas para poder ver el credito 
+    credit_limit_info = fields.Monetary(related='account_id.creditLine', string="Account Credit")
+    account_type = fields.Selection(related='account_id.typeAccount')
+    
+    credit_available = fields.Monetary(
+                                       string="Credit ", 
+                                       compute="_compute_credit_available",
+                                       currency_field='currency_id'
+                                       )
+    
     
     account_id = fields.Many2one('g3_bank.account', string="Account", readonly=True)
+    
+    # En models/movement.py
     
     @api.constrains('amount', 'name', 'account_id')
     def _validationAmountError(self):
         for r in self:
-            # Valido que el amount sea positivo
             if r.amount <= 0:
-                #Si no salta la excepcion
                 raise ValidationError("The amount must be greater than 0.")
+        
+            if r.name == 'payment':
+                total_disponible = r.account_id.balance + r.account_id.creditLine
             
-            #Valido que el dinero al hacer un pago sea mayor que el balance
-            if r.name == 'payment':
+                if r.amount > total_disponible:
+                    raise ValidationError("The balance and credit are insufficient.")
+            
                 if r.amount > r.account_id.balance:
-                    raise ValidationError("You do not have enough money in account")
-                
-    @api.depends('amount', 'name', 'account_id.balance')
-    def _compute_movement_balance(self):
-        for r in self:
-            # Primero cogemos el balance actual de la cuenta
-            current_account_balance = r.account_id.balance         
-            if r.name == 'payment':
-                r.balance = current_account_balance - r.amount
-            elif r.name == 'deposit':
-                r.balance = current_account_balance + r.amount
-            else:
-                r.balance = current_account_balance
+                    credit_necesario = r.amount - r.account_id.balance
+                    r.account_id.creditLine -= credit_necesario
+                    
+                    
