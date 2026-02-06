@@ -44,8 +44,6 @@ class Account(models.Model):
                 elif move.name == 'payment':
                     bal -= move.amount
                     
-            record.balance = bal
-
 #   Valida que el begin balance no sea negativo.
     @api.constrains('beginBalance')
     def _check_begin_balance(self):
