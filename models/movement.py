@@ -75,24 +75,3 @@ class Movement(models.Model):
                 r.credit_available = r.account_id.creditLine - usado
             else:
                 r.credit_available = 0.0
-    #Metodo para borrar el ultimo movimiento, no se si funciona (falta boton)
-    def unlink(self):
-        for record in self:
-            #Busca cual es el ultimo movimiento de esta cuenta
-            last_movement = self.search([
-                ('account_id', '=', record.account_id.id)
-            ], order='timestamp desc, id desc', limit=1)
-
-            # Esto valida que solo puedas borrar el ultimo movimiento
-            if record.id != last_movement.id:
-                raise ValidationError(
-                    "Only the last account movement can be deleted ."
-                )
-            # Actualiza el saldo de la cuenta antes de borrar
-            # Si era deposito restamos al saldo si es pago sumo.
-            amount_to_return = record.amount if record.name == 'deposit' else -record.amount
-            
-            #Mandamos el balance 
-            record.account_id.balance -= amount_to_return
-
-        return super(Movement, self).unlink()
