@@ -38,13 +38,14 @@
                         </group>
                         <group>
                             <field name="street"/>
-                            <field name="state_id"/>
                             <field name="country_id"/>
+                            <field name="state_id"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Cuentas" name="detalles_cuentas">
-                            <field name="account_ids" />
+                            <field name="account_ids"
+                            domain="[('customer_ids', '=', False), ('balance', '>', 0)]"/>
                         </page>
                     </notebook>
                 </group>
