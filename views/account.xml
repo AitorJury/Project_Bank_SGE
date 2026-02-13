@@ -75,10 +75,20 @@
                                     <button name="%(g3_movement_action)d"
                                             string="Create Movement"
                                             type="action"
-                                            class="oe_highlight"/>
+                                            class="oe_highlight"
+                                            context="{'default_account_id': active_id}"/>
+                
+                                    <button name="action_unlink_movement"
+                                            string="Delete Movement"
+                                            type="object"
+                                            icon="fa-trash"
+                                            class="btn-danger"
+                                            confirm="Are you sure to delete the last movement?"
+                                            attrs="{'invisible': [('movement_ids', '=', [])]}"/>
+                                    
                                 </header>
-                                <field name="movement_ids"
-                                       readonly="1"/>
+    
+                                <field name="movement_ids" readonly="1"/>
                             </page>
                         </notebook>
                     </sheet>
