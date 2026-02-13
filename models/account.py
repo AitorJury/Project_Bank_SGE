@@ -43,6 +43,7 @@ class Account(models.Model):
                     bal += move.amount
                 elif move.name == 'payment':
                     bal -= move.amount
+                record.balance = bal    
                     
 #   Valida que el begin balance no sea negativo.
     @api.constrains('beginBalance')
@@ -100,4 +101,13 @@ class Account(models.Model):
 #            'target': 'new',
 #            'context': {'default_account_id': self.id},
 #        }
+
+    #METODO CAMBIADO
+    def action_unlink_movement(self):
+        movements_sorted = self.movement_ids.sorted(key=lambda r: (r.timestamp, r.id), reverse=True)
+        last_movement = movements_sorted[0]
+        last_movement.unlink()
+    
+        return True
+
 

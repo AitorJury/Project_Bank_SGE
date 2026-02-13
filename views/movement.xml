@@ -1,5 +1,26 @@
-    <odoo>
+<odoo>
     <data>
+        <!-- CAMBIADO DISTINTO -->
+        <record model="ir.ui.view" id="movement_search_view">
+            <field name="name">g3_bank.movement.search</field>
+            <field name="model">g3_bank.movement</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Descripción"/>
+                    <field name="account_id"/>
+
+                    <filter name="filter_deposit" string="Depósitos" domain="[('name','=','deposit')]"/>
+                    <filter name="filter_payment" string="Pagos" domain="[('name','=','payment')]"/>
+                    <separator/>
+                    <searchpanel>
+                        <field name="account_id" 
+                               string="Seleccione Cuenta" 
+                               enable_counters="1   " 
+                               select="one"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
         <record model="ir.ui.view" id="movement_tree_view">
             <field name="name">g3_bank.movement.tree</field>
             <field name="model">g3_bank.movement</field>
@@ -10,8 +31,9 @@
                     <field name="name"/>
                     <field name="amount" sum="Total Movements"/>
                     <field name="balance"/>
-                    <field name="account_type" invisible="1"/> 
-                    <field name="credit_limit_info" attrs="{'column_invisible': [('account_type', '!=', 'CREDIT')]}"/>
+                    <!-- CAMBIADO DISTINTO
+                        HE CAMBIADO VALORES PARA QUE NO APAREZCAN EN EL TREE                    -->
+              
                 </tree>
             </field>
         </record>
@@ -26,15 +48,11 @@
                             <group>
                                 <field name="name" attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="amount" attrs="{'readonly': [('id', '!=', False)]}"/>
-                                <field name="account_id" 
-                                           readonly="1" 
-                                />
-
-                                <field name="account_type" invisible="1"/>
-
-                                <field name="credit_limit_info" attrs="{'invisible': [('account_type', '!=', 'CREDIT')]}"/>
+                                <field name="account_id" readonly="1" />
                             </group>
                             <group>
+                                <!-- CAMBIADO DISTINTO
+                        HE CAMBIADO VALORES PARA QUE NO APAREZCAN EN EL FORM                    -->
                                 <field name="timestamp" readonly="1"/>
                                 <field name="balance" readonly="1"/>
                                 <field name="currency_id" readonly="1"/>
@@ -45,5 +63,7 @@
                 </form>
             </field>
         </record>
+
     </data>
 </odoo>
+

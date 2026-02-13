@@ -66,8 +66,7 @@
                                 <field name="balance"
                                        readonly="1"/>
                                 <field name="creditLine"
-                                       attrs="{'column_invisible': [('typeAccount', '!=', 'CREDIT')]}"
-                                       optional="show"/>
+                                       attrs="{'invisible': [('typeAccount', '!=', 'CREDIT')]}"/>
                             </group>
                         </group>
                         <notebook>
@@ -78,9 +77,18 @@
                                             type="action"
                                             class="oe_highlight"
                                             context="{'default_account_id': active_id}"/>
+                
+                                    <button name="action_unlink_movement"
+                                            string="Delete Movement"
+                                            type="object"
+                                            icon="fa-trash"
+                                            class="btn-danger"
+                                            confirm="Are you sure to delete the last movement?"
+                                            attrs="{'invisible': [('movement_ids', '=', [])]}"/>
+                                    
                                 </header>
-                                <field name="movement_ids"
-                                       readonly="1"/>
+    
+                                <field name="movement_ids" readonly="1"/>
                             </page>
                         </notebook>
                     </sheet>
