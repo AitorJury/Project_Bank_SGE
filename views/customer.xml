@@ -45,7 +45,9 @@
                     <notebook>
                         <page string="Cuentas" name="detalles_cuentas">
                             <field name="account_ids"
-                            domain="[('customer_ids', '=', False), ('balance', '>', 0)]"/>
+                            domain="[('customer_ids', '=', False), ('balance', '>', 0)]"
+                            readonly="True"
+                            />
                         </page>
                     </notebook>
                 </group>

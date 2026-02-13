@@ -28,7 +28,7 @@
         <menuitem id="menu_bank_accounts" name="My Accounts" parent="main_bank_menu" action="g3_account_action"/>
         <!-- ES PARA QUE APAREZCA EL TREE  -->
         <menuitem id="menu_bank_movements" name="My Movements" parent="main_bank_menu" action="g3_movement_tree"/>
-        <menuitem id="menu_bank_customers" name="Customers" parent="main_bank_menu" action="g3_customer_action" />
+        <menuitem id="menu_bank_customers" name="Customers" parent="main_bank_menu" action="g3_customer_action" groups="g3_bank.Admins" />
 
     </data>
 </odoo>
