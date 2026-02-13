@@ -25,6 +25,7 @@
 
     # always loaded
     'data': [
+        'security/groups_data.xml',
         'security/ir.model.access.csv',
         'views/bank.xml',
         'views/customer.xml',
